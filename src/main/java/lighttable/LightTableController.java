@@ -14,6 +14,7 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Slider;
 import javafx.scene.layout.AnchorPane;
+import lighttable.Renderer.RenderMode;
 
 public class LightTableController implements Initializable {
 
@@ -24,6 +25,8 @@ public class LightTableController implements Initializable {
 	private Slider slider;
 
 	private ExecutorService executor;
+
+	private Renderer renderer;
 
 	private int worldSize = 2000;
 
@@ -62,10 +65,21 @@ public class LightTableController implements Initializable {
 			// });
 
 			executor.execute(new TableThread(50, table));
-			new Renderer(graphicsContext, table, pixelSize).start();
+			renderer = new Renderer(graphicsContext, table, pixelSize);
+			renderer.start();
 		}
 		running = true;
 
+	}
+
+	@FXML
+	public void hsv(ActionEvent event) throws Exception {
+		renderer.setRenderMode(RenderMode.HSV);
+	}
+
+	@FXML
+	public void rgb(ActionEvent event) throws Exception {
+		renderer.setRenderMode(RenderMode.RGB);
 	}
 
 	public void stopGame() {
