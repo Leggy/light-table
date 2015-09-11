@@ -22,7 +22,7 @@ public class LightTableController implements Initializable {
 	private AnchorPane canvasPane;
 
 	@FXML
-	private Slider slider;
+	private Slider hsvSaturation, hsvValue;
 
 	private ExecutorService executor;
 
@@ -32,7 +32,7 @@ public class LightTableController implements Initializable {
 
 	private int tableSize = 500;
 
-	private int pixelSize = 50;
+	private int pixelSize = 5;
 
 	Table table;
 
@@ -40,7 +40,7 @@ public class LightTableController implements Initializable {
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-		table = new Table(20, 15);// tableSize*2, tableSize);
+		table = new Table(200, 150);// tableSize*2, tableSize);
 
 	}
 
@@ -57,12 +57,23 @@ public class LightTableController implements Initializable {
 
 			executor = Executors.newCachedThreadPool();
 
-			// slider.valueProperty().addListener(new ChangeListener<Number>() {
-			// public void changed(ObservableValue<? extends Number> ov,
-			// Number oldVal, Number newVal) {
-			// //Table.setZ(newVal.doubleValue() * Math.E);
-			// }
-			// });
+			hsvSaturation.valueProperty().addListener(
+					new ChangeListener<Number>() {
+						public void changed(
+								ObservableValue<? extends Number> ov,
+								Number oldVal, Number newVal) {
+							renderer.setHsvSaturation(newVal.doubleValue());
+						}
+					});
+			
+			hsvValue.valueProperty().addListener(
+					new ChangeListener<Number>() {
+						public void changed(
+								ObservableValue<? extends Number> ov,
+								Number oldVal, Number newVal) {
+							renderer.setHsvValue(newVal.doubleValue());
+						}
+					});
 
 			executor.execute(new TableThread(50, table));
 			renderer = new Renderer(graphicsContext, table, pixelSize);
@@ -80,6 +91,11 @@ public class LightTableController implements Initializable {
 	@FXML
 	public void rgb(ActionEvent event) throws Exception {
 		renderer.setRenderMode(RenderMode.RGB);
+	}
+
+	@FXML
+	public void distance(ActionEvent event) throws Exception {
+		renderer.setRenderMode(RenderMode.DISTANCE);
 	}
 
 	public void stopGame() {

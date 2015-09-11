@@ -16,6 +16,11 @@
             <Button layoutX="29.0" layoutY="201.0" mnemonicParsing="false" onAction="#hsv" text="HSV" />
             <Button layoutX="29.0" layoutY="230.0" mnemonicParsing="false" onAction="#rgb" text="RGB" />
             <Label layoutX="8.0" layoutY="175.0" text="Render Options" />
+            <Button layoutX="17.0" layoutY="258.0" mnemonicParsing="false" onAction="#distance" text="Distance" />
+            <Label layoutX="10.0" layoutY="343.0" rotate="0.0" text="HSV Saturation" />
+            <Label layoutX="22.0" layoutY="402.0" rotate="0.0" text="HSV Value" />
+            <Slider fx:id="hsvSaturation" layoutX="0.0" layoutY="359.0" max="1.0" prefWidth="100.00009999999747" value="1.0" />
+            <Slider fx:id="hsvValue" layoutX="0.0" layoutY="418.0" max="1.0" prefWidth="100.00009999999747" value="1.0" />
           </children>
         </AnchorPane>
         <AnchorPane fx:id="canvasPane" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="720.0" />

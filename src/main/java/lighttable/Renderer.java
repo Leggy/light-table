@@ -13,8 +13,11 @@ import javafx.scene.paint.Color;
 public class Renderer extends AnimationTimer {
 
 	public enum RenderMode {
-		HSV, RGB
+		HSV, RGB, DISTANCE
 	}
+	
+	private double hsvSaturation;
+	private double hsvValue;
 
 	private GraphicsContext graphicsContext;
 	private int pixelSize;
@@ -32,10 +35,20 @@ public class Renderer extends AnimationTimer {
 		this.graphicsContext = graphicsContext;
 		this.pixelSize = pixelSize;
 		this.renderMode = RenderMode.HSV;
+		this.hsvSaturation = 1.0;
+		this.hsvValue = 1.0;
 	}
 	
 	public void setRenderMode(RenderMode renderMode){
 		this.renderMode = renderMode;
+	}
+	
+	public void setHsvSaturation(double hsvSaturation){
+		this.hsvSaturation = hsvSaturation;
+	}
+	
+	public void setHsvValue(double hsvValue){
+		this.hsvValue = hsvValue;
 	}
 
 	@Override
@@ -51,7 +64,7 @@ public class Renderer extends AnimationTimer {
 		for (int y = 0; y < table.yMax(); y++) {
 			// graphicsContext.setFill(getColour(((double)y)/table.yMax()));
 			for (int x = 0; x < table.xMax(); x++) {
-				graphicsContext.setFill(getColour(table.get(x, y)));
+				graphicsContext.setFill(getColour(x, y));
 
 				graphicsContext.fillRect(x * pixelSize, y * pixelSize,
 						pixelSize, pixelSize);
@@ -59,28 +72,37 @@ public class Renderer extends AnimationTimer {
 		}
 	}
 
-	private Color getColour(double noise) {
+	private Color getColour(int x, int y) {
 		switch (renderMode) {
 		case HSV:
-			return hsvColor(noise);
+			return hsvColor(x, y);
 		case RGB:
-			return rgbColor(noise);
+			return rgbColor(x, y);
+		case DISTANCE:
+			return distanceColor(x, y);
 		default:
 			return new Color(0, 0, 0, 1);
 		}
 	}
 
-	private Color hsvColor(double noise) {
-		return Color.hsb(noise * 360, 0.5, 1);
+	private Color hsvColor(int x, int y) {
+		double noise = table.get(x, y);
+		return Color.hsb(noise * 360, hsvSaturation, hsvValue);
 	}
 
-	private Color rgbColor(double noise) {
+	private Color rgbColor(int x, int y) {
+		double noise = table.get(x, y);
 		double Bx = noise * Math.PI * Math.PI * 2 / 3;
 
 		double r = (Math.sin(Bx) + 1) / 2;
 		double g = (Math.sin(Bx + (2 * Math.PI) / 3) + 1) / 2;
 		double b = (Math.sin(Bx - (2 * Math.PI) / 3) + 1) / 2;
 		return new Color(r, g, b, 1);
+	}
+	
+	private Color distanceColor(int x, int y){
+		double noise = ( Math.sqrt(Math.pow(x, 2) + Math.pow(y, 2)) * pixelSize) + ((double)System.currentTimeMillis())/10;
+		return Color.hsb(noise % 360, 1, 1);
 	}
 
 	private Color getColourHaxMode(double noise) {
