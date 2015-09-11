@@ -1,0 +1,29 @@
+allprojects {
+  group = 'tabletop'
+  version = '0.1'
+
+}
+
+repositories {
+  mavenCentral()
+  mavenLocal()
+}
+
+
+apply plugin: 'java';
+apply plugin: 'eclipse';
+apply plugin: 'application';
+
+mainClassName = "lighttable.LightTableLauncher"
+
+repositories {
+  mavenCentral()
+  mavenLocal()
+}
+
+dependencies {
+  // Unit testing with JUnit
+  testCompile group: 'junit', name: 'junit', version: '4.11'
+}
+
+
