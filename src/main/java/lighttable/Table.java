@@ -1,41 +1,32 @@
 package lighttable;
 
-import java.util.ArrayList;
+import java.util.*;
 
 public class Table {
 
-	private static double Z = Math.E;
+	private static final double Z = Math.E;
 
-	private double z = Table.Z;
+	private final Double[] table;
 
-	private int time = (int) System.currentTimeMillis() / 1000;
-
-	private ArrayList<Double> table;
-
-	private int width;
-	private int height;
+	private final int width;
+	private final int height;
 
 	long seed = 1234567893l;
 
 	public Table(int x, int y) {
 		this.width = x;
 		this.height = y;
-		this.table = new ArrayList<Double>(x * y);
+		this.table = new Double[x * y];
 
-		time = (int) System.currentTimeMillis() / 1000;
-		for (int j = 0; j < height; j++) {
-			for (int i = 0; i < width; i++) {
-				table.add(j * width + i, perlin(i, j, time));
-			}
-		}
+		tick();
 	}
 
 	public void set(int x, int y, double value) {
-		table.set(y * width + x, value);
+		table[y * width + x] = value;
 	}
 
 	public double get(int x, int y) {
-		return table.get(y * width + x);
+		return table[y * width + x];
 	}
 
 	public int xMax() {
@@ -50,12 +41,12 @@ public class Table {
 		return PerlinImprovedNoise.noise(x / 9, y / 9, z);
 	}
 
-	public void tick() {
+	public final void tick() {
 		
 		double time = (double)(System.currentTimeMillis()) / 10000;
 		for (int j = 0; j < height; j++) {
 			for (int i = 0; i < width; i++) {
-				table.set(j * width + i, perlin(i, j, time));
+				table[j * width + i] = perlin(i, j, time);
 			}
 		}
 

@@ -38,3 +38,4 @@ decoworld.vanilla/resources/Thumbs.db
 # Local sonar installations
 sonar-project.properties
 .sonar/
+/.nb-gradle/

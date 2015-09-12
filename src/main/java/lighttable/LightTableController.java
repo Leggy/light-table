@@ -1,20 +1,15 @@
 package lighttable;
 
-import java.net.URL;
-import java.util.ResourceBundle;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
+import java.net.*;
+import java.util.*;
+import java.util.concurrent.*;
 
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
+import javafx.beans.value.*;
 import javafx.event.ActionEvent;
-import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
-import javafx.scene.canvas.Canvas;
-import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.control.Slider;
-import javafx.scene.layout.AnchorPane;
-import lighttable.Renderer.RenderMode;
+import javafx.fxml.*;
+import javafx.scene.canvas.*;
+import javafx.scene.control.*;
+import javafx.scene.layout.*;
 
 public class LightTableController implements Initializable {
 
@@ -28,20 +23,19 @@ public class LightTableController implements Initializable {
 
 	private Renderer renderer;
 
-	private int worldSize = 2000;
-
-	private int tableSize = 500;
-
-	private int pixelSize = 5;
+	private final int pixelSize;
 
 	Table table;
 
 	private boolean running = false;
 
+	public LightTableController() {
+		this.pixelSize = 50;
+	}
+
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-		table = new Table(200, 150);// tableSize*2, tableSize);
-
+		table = new Table(20, 15);// tableSize*2, tableSize);
 	}
 
 	@FXML
@@ -57,23 +51,13 @@ public class LightTableController implements Initializable {
 
 			executor = Executors.newCachedThreadPool();
 
-			hsvSaturation.valueProperty().addListener(
-					new ChangeListener<Number>() {
-						public void changed(
-								ObservableValue<? extends Number> ov,
-								Number oldVal, Number newVal) {
-							renderer.setHsvSaturation(newVal.doubleValue());
-						}
-					});
+			hsvSaturation.valueProperty().addListener((ObservableValue<? extends Number> ov, Number oldVal, Number newVal) -> {
+				renderer.setHsvSaturation(newVal.doubleValue());
+			});
 			
-			hsvValue.valueProperty().addListener(
-					new ChangeListener<Number>() {
-						public void changed(
-								ObservableValue<? extends Number> ov,
-								Number oldVal, Number newVal) {
-							renderer.setHsvValue(newVal.doubleValue());
-						}
-					});
+			hsvValue.valueProperty().addListener((ObservableValue<? extends Number> ov, Number oldVal, Number newVal) -> {
+				renderer.setHsvValue(newVal.doubleValue());
+			});
 
 			executor.execute(new TableThread(50, table));
 			renderer = new Renderer(graphicsContext, table, pixelSize);
@@ -85,17 +69,17 @@ public class LightTableController implements Initializable {
 
 	@FXML
 	public void hsv(ActionEvent event) throws Exception {
-		renderer.setRenderMode(RenderMode.HSV);
+		renderer.setRenderMode(Renderer.Mode.HSV);
 	}
 
 	@FXML
 	public void rgb(ActionEvent event) throws Exception {
-		renderer.setRenderMode(RenderMode.RGB);
+		renderer.setRenderMode(Renderer.Mode.RGB);
 	}
 
 	@FXML
 	public void distance(ActionEvent event) throws Exception {
-		renderer.setRenderMode(RenderMode.DISTANCE);
+		renderer.setRenderMode(Renderer.Mode.DISTANCE);
 	}
 
 	public void stopGame() {

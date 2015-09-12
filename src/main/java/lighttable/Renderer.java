@@ -12,16 +12,16 @@ import javafx.scene.paint.Color;
  */
 public class Renderer extends AnimationTimer {
 
-	public enum RenderMode {
+	public enum Mode {
 		HSV, RGB, DISTANCE
 	}
 	
 	private double hsvSaturation;
 	private double hsvValue;
 
-	private GraphicsContext graphicsContext;
-	private int pixelSize;
-	private RenderMode renderMode;
+	private final GraphicsContext graphicsContext;
+	private final int pixelSize;
+	private Mode renderMode;
 
 	Table table;
 
@@ -34,12 +34,12 @@ public class Renderer extends AnimationTimer {
 		this.table = table;
 		this.graphicsContext = graphicsContext;
 		this.pixelSize = pixelSize;
-		this.renderMode = RenderMode.HSV;
+		this.renderMode = Mode.HSV;
 		this.hsvSaturation = 1.0;
 		this.hsvValue = 1.0;
 	}
 	
-	public void setRenderMode(RenderMode renderMode){
+	public void setRenderMode(Mode renderMode){
 		this.renderMode = renderMode;
 	}
 	

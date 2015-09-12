@@ -2,11 +2,10 @@ package lighttable;
 
 import java.net.URL;
 
-import javafx.application.Application;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
-import javafx.stage.Stage;
+import javafx.application.*;
+import javafx.fxml.*;
+import javafx.scene.*;
+import javafx.stage.*;
 
 /**
  * Launcher class for Light Table Visualiser.

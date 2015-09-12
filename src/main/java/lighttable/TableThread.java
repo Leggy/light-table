@@ -9,8 +9,8 @@ package lighttable;
  */
 public class TableThread implements Runnable {
 
-	private int tick;
-	private Table table;
+	private final int tick;
+	private final Table table;
 
 	public TableThread(int tick, Table table) {
 		this.tick = tick;
@@ -24,7 +24,7 @@ public class TableThread implements Runnable {
 				Thread.sleep(tick);
 				table.tick();
 			} catch (InterruptedException e) {
-				e.printStackTrace();
+				e.printStackTrace(System.err);
 			}
 		}
 
